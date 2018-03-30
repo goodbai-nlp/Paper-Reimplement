@@ -114,8 +114,6 @@ if TrainNew:
 
         input_data = Variable(torch.from_numpy(we1.vectors[id1]))
         trg_data = Variable(torch.from_numpy(we2.vectors[id2]))
-        # X = torch.Tensor(HALF_BATCH_SIZE, d)
-
 
         for d_index in range(d_steps):
             for p in D.parameters():
@@ -126,10 +124,8 @@ if TrainNew:
             #  1A: Train D on real
             d_real_decision = D(trg_data.cuda().float())
             d_real_error = criterion(d_real_decision, Variable(torch.ones(HALF_BATCH_SIZE, 1)).cuda())  # ones = true
-            # d_real_error.backward() # compute/store gradients, but don't change params
 
             #  1B: Train D on fake
-
             g_fake_data, g_recon_data = G(input_data.cuda().float())  # detach to avoid training G on these labels,假设G固定
 
 
