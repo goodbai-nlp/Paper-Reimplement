@@ -87,7 +87,7 @@ D.cuda()
 G.apply(weights_init)
 D.apply(weight_init2)
 
-dataDir = './'
+dataDir = 'UBiLexAT/data/zh-en/'
 rng = check_random_state(3)
 
 we1 = WordEmbeddings()
@@ -171,21 +171,21 @@ if TrainNew:
         if (epoch > 10000) and (loss.data[0] < gloss_min):
             gloss_min = loss.data[0]
             # W = G.map.weight.data.cpu().numpy()
-            torch.save(G.state_dict(), 'g_params_min.pkl')
+            torch.save(G.state_dict(), 'UBiLexAT/tune/g_params_min.pkl')
             print("epoch:{} sum_loss:{}".format(epoch, loss.data[0]))
 
             # print(" recon_gen_loss_val:{}  ||W^T*W - I||:{}".format(g_recon_loss.data[0],
             #                                                         np.linalg.norm(np.dot(W.T, W) - np.identity(d))))
             print("d_loss:{:.4f} g_adv_loss:{:.4f} recon_gen_loss_val:{:.4f} ".format(d_error.data[0],g_error.data[0],g_recon_loss.data[0]))            # we1.save_transformed_vectors(dataDir + '/UBiLexAT/data/zh-en/transformed-1' + '.' + 'zh')
 
-    torch.save(G.state_dict(), 'g_params_final.pkl')
+    torch.save(G.state_dict(), 'UBiLexAT/tune/g_params_final.pkl')
 
 print('Training time', (time.time() - start_time) / 60, 'min')
 
 
 G2 = Generator(input_size=g_input_size, output_size=g_output_size).cuda()
 
-G2.load_state_dict(torch.load('g_params_min.pkl'))
+G2.load_state_dict(torch.load('UBiLexAT/tune/g_params_min.pkl'))
 
 d_input_data_all = Variable(torch.from_numpy(we1.vectors))
 
@@ -193,6 +193,6 @@ transformed_data,_ = G2(d_input_data_all.cuda().float())
 
 we1.transformed_vectors = transformed_data.data.cpu().numpy()
 
-we1.save_transformed_vectors(dataDir + '/UBiLexAT/data/zh-en/transformed-1' + '.' + 'zh')
+we1.save_transformed_vectors(dataDir + 'transformed-1' + '.' + 'zh')
 print('All running time',(time.time() - start_time) / 60, 'min')
 
