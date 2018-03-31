@@ -4,13 +4,13 @@
 ---
 ### 1. Model training
 ```
-	python Train.py 1
+python Train.py 1
 ```
 
 ### 2. Evaluation
 
 ```
-	bash evaluate.sh
+bash evaluate.sh
 ```
 ## requirement
 ---
